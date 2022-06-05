@@ -22,19 +22,24 @@ public class TokenManager {
     private String tokenSignKey = "123456";
 
     public String createToken(String username) {
-        String token = Jwts.builder().setSubject(username)
+        return Jwts.builder().setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis() + tokenExpiration))
                 .signWith(SignatureAlgorithm.HS512, tokenSignKey).compressWith(CompressionCodecs.GZIP).compact();
-        return token;
     }
 
     public String getUserFromToken(String token) {
-        String user = Jwts.parser().setSigningKey(tokenSignKey).parseClaimsJws(token).getBody().getSubject();
-        return user;
+        return Jwts.parser().setSigningKey(tokenSignKey).parseClaimsJws(token).getBody().getSubject();
     }
 
     public void removeToken(String token) {
         //jwttoken无需删除，客户端扔掉即可。
     }
 
+    public static void main(String[] args) {
+        TokenManager tokenManager = new TokenManager();
+        String token = "eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ." +
+                "H4sIAAAAAAAAAKtWKi5NUrJSSkzJzcxT0lFKrShQsjI0MzUxsbQ0NzOsBQBBfhniIAAAAA." +
+                "vuOrN57dsRy0UD5o650kH6lnb6X8QVRaq1Vtk_SVa8UWzSyoh9Quhv4GUu9rClFb-zc1X6VmpSrfRQgoNG9otQ";
+        System.out.println(tokenManager.getUserFromToken(token));
+    }
 }

@@ -76,7 +76,7 @@ public class CanalClient {
             String sql = SQL_QUEUE.poll();
             System.out.println("[sql]----> " + sql);
 
-            this.execute(sql.toString());
+            this.execute(sql);
         }
     }
 
